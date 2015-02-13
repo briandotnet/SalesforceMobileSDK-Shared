@@ -597,6 +597,20 @@ cordova.define("com.salesforce.plugin.smartstore", function (require, exports, m
         if (pageSize) { inst.pageSize = pageSize; } // override default only if a value was specified
         return inst;
     };
+
+	// ====== Store manipulation ======
+	var removeAllStores = function(successCB, errorCB) {
+	    storeConsole.debug("SmartStore.removeAllStores");
+	    exec(SALESFORCE_MOBILE_SDK_VERSION, successCB, errorCB, SERVICE, "pgRemoveAllStores", []);
+	};
+
+	var removeStore = function(storeName, successCB, errorCB) {
+	    storeConsole.debug("SmartStore.removeStore: " + storeName);
+	    exec(SALESFORCE_MOBILE_SDK_VERSION, successCB, errorCB, SERVICE,
+	        "pgRemoveStore",
+	        [{"storeName": storeName}]
+	        );
+	};
     
     // ====== Soup manipulation ======
     var getDatabaseSize = function(successCB, errorCB) {
@@ -760,6 +774,8 @@ cordova.define("com.salesforce.plugin.smartstore", function (require, exports, m
         buildSmartQuerySpec: buildSmartQuerySpec,
         clearSoup: clearSoup,
         closeCursor: closeCursor,
+	    removeAllStores: removeAllStores,
+	    removeStore: removeStore,
         getDatabaseSize: getDatabaseSize,
         getLogLevel: getLogLevel,
         getSoupIndexSpecs: getSoupIndexSpecs,
